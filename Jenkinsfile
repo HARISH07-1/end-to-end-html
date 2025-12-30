@@ -9,34 +9,32 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/HARISH07-1/end-to-end-html.git'
+                checkout scm
             }
         }
 
         stage('Test') {
             steps {
-                sh 'chmod +x scripts/test.sh'
-                sh './scripts/test.sh'
+                bat 'scripts\\test.bat'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE_NAME .'
+                bat 'docker build -t %IMAGE_NAME% .'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'chmod +x scripts/deploy.sh'
-                sh './scripts/deploy.sh'
+                bat 'scripts\\deploy.bat'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline executed successfully!'
+            echo 'CI/CD Pipeline executed successfully on Windows!'
         }
         failure {
             echo 'Pipeline failed. Check logs.'
